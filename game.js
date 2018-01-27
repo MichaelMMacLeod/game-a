@@ -116,7 +116,7 @@ main.game.events.mousehandler = () => {
     });
 
     return mouse;
-}
+};
 
 main.game.start = () => {
     var canvas = main.canvas.create();
