@@ -8,6 +8,7 @@ main.point = {};
 main.poly = {};
 main.state = {};
 main.game = {};
+main.game.events = {};
 
 main.canvas.create = () => {
     var canvas = document.createElement('canvas');
@@ -60,9 +61,10 @@ main.canvas.draw = (canvas, polys) => {
     });
 };
 
-main.state.create = (state_object, canvas, polys) => {
+main.state.create = (state_object, canvas, polys, keyhandler) => {
     state_object.canvas = canvas;
     state_object.polys = polys;
+    state_object.keyhandler = keyhandler;
 };
 
 main.game.draw = (state) => {
@@ -79,6 +81,20 @@ main.game.loop = (state, ms_per_update) => {
     window.setInterval(loop, ms_per_update);
 };
 
+main.game.events.keyhandler = () => {
+    var keys = [];
+
+    window.addEventListener('keydown', (e) => {
+        keys[e.key] = true;
+    });
+
+    window.addEventListener('keyup', (e) => {
+        keys[e.key] = false;
+    });
+
+    return keys;
+};
+
 main.game.start = () => {
     var canvas = main.canvas.create();
     main.canvas.events.size(canvas);
@@ -92,8 +108,10 @@ main.game.start = () => {
 
     var poly = main.poly.create(points);
 
+    var keyhandler = main.game.events.keyhandler();
+
     main.game.state = {};
-    main.state.create(main.game.state, canvas, [poly]);
+    main.state.create(main.game.state, canvas, [poly], keyhandler);
 
     main.game.loop(main.game.state, 30);
 };
