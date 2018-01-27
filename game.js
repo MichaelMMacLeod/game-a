@@ -98,12 +98,21 @@ main.game.events.keyhandler = () => {
 main.game.events.mousehandler = () => {
     var mouse = {
         x: 0,
-        y: 0
+        y: 0,
+        pressed: false
     };
 
     window.addEventListener('mousemove', (e) => {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mousedown', () => {
+        mouse.pressed = true;
+    });
+
+    window.addEventListener('mouseup', () => {
+        mouse.pressed = false;
     });
 
     return mouse;
@@ -119,7 +128,7 @@ main.game.start = () => {
     main.game.state = {};
     main.state.create(main.game.state, canvas, [], keyhandler, mousehandler);
 
-    main.game.loop(main.game.state, 2);
+    main.game.loop(main.game.state, 30);
 };
 
 main.game.start();
