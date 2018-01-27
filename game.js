@@ -8,8 +8,7 @@ main.point = {};
 main.poly = {};
 main.state = {};
 main.game = {};
-main.game.events = {};
-
+main.game.events = {}; 
 main.canvas.create = () => {
     var canvas = document.createElement('canvas');
     document.body.appendChild(canvas);
@@ -61,10 +60,11 @@ main.canvas.draw = (canvas, polys) => {
     });
 };
 
-main.state.create = (state_object, canvas, polys, keyhandler) => {
+main.state.create = (state_object, canvas, polys, keyhandler, mousehandler) => {
     state_object.canvas = canvas;
     state_object.polys = polys;
     state_object.keyhandler = keyhandler;
+    state_object.mousehandler = mousehandler;
 };
 
 main.game.draw = (state) => {
@@ -95,26 +95,31 @@ main.game.events.keyhandler = () => {
     return keys;
 };
 
+main.game.events.mousehandler = () => {
+    var mouse = {
+        x: 0,
+        y: 0
+    };
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    return mouse;
+}
+
 main.game.start = () => {
     var canvas = main.canvas.create();
     main.canvas.events.size(canvas);
 
-    var p1 = main.point.create(20, 20);
-    var p2 = main.point.create(50, 20);
-    var p3 = main.point.create(50, 50);
-    var p4 = main.point.create(20, 50);
-
-    var points = [p1, p2, p3, p4];
-
-    var poly = main.poly.create(points);
-
     var keyhandler = main.game.events.keyhandler();
+    var mousehandler = main.game.events.mousehandler();
 
     main.game.state = {};
-    main.state.create(main.game.state, canvas, [poly], keyhandler);
+    main.state.create(main.game.state, canvas, [], keyhandler, mousehandler);
 
-    main.game.loop(main.game.state, 30);
+    main.game.loop(main.game.state, 2);
 };
 
 main.game.start();
-console.log('there should be a white rectangle in the upper left hand corner');
