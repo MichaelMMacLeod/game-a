@@ -9,6 +9,7 @@ main.poly = {};
 main.state = {};
 main.game = {};
 main.game.events = {}; 
+
 main.canvas.create = () => {
     var canvas = document.createElement('canvas');
     document.body.appendChild(canvas);
@@ -60,25 +61,33 @@ main.canvas.draw = (canvas, polys) => {
     });
 };
 
-main.state.create = (state_object, canvas, polys, keyhandler, mousehandler) => {
+main.state.create = (
+    state_object, 
+    canvas, 
+    polys, 
+    keyhandler, 
+    mousehandler, 
+    ms_per_update
+) => {
     state_object.canvas = canvas;
     state_object.polys = polys;
     state_object.keyhandler = keyhandler;
     state_object.mousehandler = mousehandler;
+    state_object.ms_per_update = ms_per_update;
 };
 
 main.game.draw = (state) => {
     main.canvas.draw(state.canvas, state.polys);
 };
 
-main.game.loop = (state, ms_per_update) => {
+main.game.loop = (state) => {
     main.canvas.fullscreen(state.canvas);
 
     var loop = () => {
         main.game.draw(state);
     };
 
-    window.setInterval(loop, ms_per_update);
+    window.setInterval(loop, state.ms_per_update);
 };
 
 main.game.events.keyhandler = () => {
@@ -126,9 +135,9 @@ main.game.start = () => {
     var mousehandler = main.game.events.mousehandler();
 
     main.game.state = {};
-    main.state.create(main.game.state, canvas, [], keyhandler, mousehandler);
+    main.state.create(main.game.state, canvas, [], keyhandler, mousehandler, 30);
 
-    main.game.loop(main.game.state, 30);
+    main.game.loop(main.game.state);
 };
 
 main.game.start();
