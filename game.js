@@ -48,6 +48,11 @@ main.point.translate = (point, dx, dy) => {
     point.y += dy;
 };
 
+main.point.move_to = (point, x, y) => {
+    point.x = x;
+    point.y = y;
+};
+
 main.poly.translate = (poly, dx, dy) => {
     poly.points.forEach((point) => {
         main.point.translate(point, dx, dy);
