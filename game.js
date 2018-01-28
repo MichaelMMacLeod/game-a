@@ -6,6 +6,7 @@ main.canvas = {};
 main.canvas.events = {};
 main.point = {};
 main.poly = {};
+main.block = {};
 main.state = {};
 main.game = {};
 main.game.events = {}; 
@@ -45,6 +46,29 @@ main.poly.translate = (poly, dx, dy) => {
     poly.points.forEach((point) => {
         main.point.translate(point, dx, dy);
     });
+};
+
+/////////////////////////////////////////////////
+// @block
+/////////////////////////////////////////////////
+
+main.block.create = (poly, center_point) => {
+    return {
+        poly: poly,
+        center: center_point
+    };
+};
+
+main.block.translate = (block, dx, dy) => {
+    main.poly.translate(block.poly, dx, dy);
+    main.point.translate(block.center, dx, dy);
+};
+
+main.block.move_to = (block, x, y) => {
+    var dx = x - block.center.x;
+    var dy = y - block.center.y;
+
+    main.block.translate(block, dx, dy);
 };
 
 /////////////////////////////////////////////////
