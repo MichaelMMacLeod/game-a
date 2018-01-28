@@ -10,6 +10,55 @@ main.state = {};
 main.game = {};
 main.game.events = {}; 
 
+/////////////////////////////////////////////////
+// @point
+/////////////////////////////////////////////////
+
+main.point.create = (x, y) => {
+    return { 
+        x: x, 
+        y: y 
+    };
+};
+
+main.point.translate = (point, dx, dy) => {
+    point.x += dx;
+    point.y += dy;
+};
+
+main.point.move_to = (point, x, y) => {
+    point.x = x;
+    point.y = y;
+};
+
+/////////////////////////////////////////////////
+// @poly
+/////////////////////////////////////////////////
+
+main.poly.create = (points) => {
+    return {
+        points: points
+    };
+};
+
+main.poly.translate = (poly, dx, dy) => {
+    poly.points.forEach((point) => {
+        main.point.translate(point, dx, dy);
+    });
+};
+
+/////////////////////////////////////////////////
+// @canvas.events
+/////////////////////////////////////////////////
+
+main.canvas.events.size = (canvas) => {
+    window.addEventListener('resize', () => main.canvas.fullscreen(canvas));
+};
+
+/////////////////////////////////////////////////
+// @canvas
+/////////////////////////////////////////////////
+
 main.canvas.create = () => {
     var canvas = document.createElement('canvas');
     document.body.appendChild(canvas);
@@ -24,39 +73,6 @@ main.canvas.resize = (canvas, width, height) => {
 
 main.canvas.fullscreen = (canvas) => {
     main.canvas.resize(canvas, window.innerWidth, window.innerHeight);
-};
-
-main.canvas.events.size = (canvas) => {
-    window.addEventListener('resize', () => main.canvas.fullscreen(canvas));
-};
-
-main.point.create = (x, y) => {
-    return { 
-        x: x, 
-        y: y 
-    };
-};
-
-main.poly.create = (points) => {
-    return {
-        points: points
-    };
-};
-
-main.point.translate = (point, dx, dy) => {
-    point.x += dx;
-    point.y += dy;
-};
-
-main.point.move_to = (point, x, y) => {
-    point.x = x;
-    point.y = y;
-};
-
-main.poly.translate = (poly, dx, dy) => {
-    poly.points.forEach((point) => {
-        main.point.translate(point, dx, dy);
-    });
 };
 
 main.canvas.draw = (canvas, polys) => {
@@ -77,6 +93,10 @@ main.canvas.draw = (canvas, polys) => {
     });
 };
 
+/////////////////////////////////////////////////
+// @state
+/////////////////////////////////////////////////
+
 main.state.create = (
     state_object, 
     canvas, 
@@ -92,19 +112,9 @@ main.state.create = (
     state_object.ms_per_update = ms_per_update;
 };
 
-main.game.draw = (state) => {
-    main.canvas.draw(state.canvas, state.polys);
-};
-
-main.game.loop = (state) => {
-    main.canvas.fullscreen(state.canvas);
-
-    var loop = () => {
-        main.game.draw(state);
-    };
-
-    window.setInterval(loop, state.ms_per_update);
-};
+/////////////////////////////////////////////////
+// @game.events
+/////////////////////////////////////////////////
 
 main.game.events.keyhandler = () => {
     var keys = [];
@@ -141,6 +151,24 @@ main.game.events.mousehandler = () => {
     });
 
     return mouse;
+};
+
+/////////////////////////////////////////////////
+// @game
+/////////////////////////////////////////////////
+
+main.game.draw = (state) => {
+    main.canvas.draw(state.canvas, state.polys);
+};
+
+main.game.loop = (state) => {
+    main.canvas.fullscreen(state.canvas);
+
+    var loop = () => {
+        main.game.draw(state);
+    };
+
+    window.setInterval(loop, state.ms_per_update);
 };
 
 main.game.start = () => {
