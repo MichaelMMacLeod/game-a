@@ -202,9 +202,15 @@ main.game.start = () => {
     var mousehandler = main.game.events.mousehandler();
 
     main.game.state = {};
-    main.state.create(main.game.state, canvas, [], keyhandler, mousehandler, 30);
+    main.state.create(
+        main.game.state, 
+        canvas, 
+        [], 
+        keyhandler, 
+        mousehandler, 
+        30);
 
     main.game.loop(main.game.state);
 };
 
-main.game.start();
+window.onload = main.game.start;
