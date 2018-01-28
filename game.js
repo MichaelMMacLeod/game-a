@@ -43,6 +43,17 @@ main.poly.create = (points) => {
     };
 };
 
+main.point.translate = (point, dx, dy) => {
+    point.x += dx;
+    point.y += dy;
+};
+
+main.poly.translate = (poly, dx, dy) => {
+    poly.points.forEach((point) => {
+        main.point.translate(point, dx, dy);
+    });
+};
+
 main.canvas.draw = (canvas, polys) => {
     var c = canvas.getContext('2d');
 
