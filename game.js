@@ -156,14 +156,13 @@ main.game.events.keyhandler = () => {
 
 main.game.events.mousehandler = () => {
     var mouse = {
-        x: 0,
-        y: 0,
+        point: main.point.create(0, 0),
         pressed: false
     };
 
     window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+        mouse.point.x = e.clientX;
+        mouse.point.y = e.clientY;
     });
 
     window.addEventListener('mousedown', () => {
