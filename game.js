@@ -117,6 +117,10 @@ main.canvas.fullscreen = (canvas) => {
     main.canvas.resize(canvas, window.innerWidth, window.innerHeight);
 };
 
+main.canvas.clear = (canvas) => {
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+};
+
 main.canvas.draw = (canvas, polys) => {
     var c = canvas.getContext('2d');
 
@@ -199,6 +203,7 @@ main.game.events.mousehandler = () => {
 /////////////////////////////////////////////////
 
 main.game.draw = (state) => {
+    main.canvas.clear(state.canvas);
     main.canvas.draw(state.canvas, state.polys);
 };
 
@@ -206,6 +211,8 @@ main.game.loop = (state) => {
     main.canvas.fullscreen(state.canvas);
 
     var loop = () => {
+        main.poly.rotate(state.polys[0], 0.01, 300, 300);
+
         main.game.draw(state);
     };
 
@@ -220,10 +227,18 @@ main.game.start = () => {
     var mousehandler = main.game.events.mousehandler();
 
     main.game.state = {};
+
+    var poly = main.poly.create([
+        main.point.create(50, 50),
+        main.point.create(100, 50),
+        main.point.create(100, 100),
+        main.point.create(50, 100)
+    ]);
+
     main.state.create(
         main.game.state, 
         canvas, 
-        [], 
+        [poly], 
         keyhandler, 
         mousehandler, 
         30);
