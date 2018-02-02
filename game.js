@@ -7,6 +7,8 @@ main.canvas.events = {};
 main.point = {};
 main.poly = {};
 main.block = {};
+main.controller = {};
+main.controller.binding = {};
 main.state = {};
 main.game = {};
 main.game.events = {}; 
@@ -90,6 +92,35 @@ main.block.move_to = (block, x, y) => {
 };
 
 /////////////////////////////////////////////////
+// @controller.binding
+/////////////////////////////////////////////////
+
+main.controller.binding.create = (key, action) => {
+    return {
+        key: key,
+        action: action
+    };
+};
+
+/////////////////////////////////////////////////
+// @controller
+/////////////////////////////////////////////////
+
+main.controller.create = (bindings, handler) => {
+    var controller = {};
+
+    controller.process = (state) => {
+        bindings.forEach((binding) => {
+            if (handler[binding.key]) {
+                binding.action(state);
+            }
+        });
+    };
+
+    return controller;
+};
+
+/////////////////////////////////////////////////
 // @canvas.events
 /////////////////////////////////////////////////
 
@@ -147,14 +178,12 @@ main.state.create = (
     state_object, 
     canvas, 
     polys, 
-    keyhandler, 
-    mousehandler, 
+    controllers,
     ms_per_update
 ) => {
     state_object.canvas = canvas;
     state_object.polys = polys;
-    state_object.keyhandler = keyhandler;
-    state_object.mousehandler = mousehandler;
+    state_object.controllers = controllers;
     state_object.ms_per_update = ms_per_update;
 };
 
@@ -211,7 +240,11 @@ main.game.loop = (state) => {
     main.canvas.fullscreen(state.canvas);
 
     var loop = () => {
-        main.poly.rotate(state.polys[0], 0.01, 300, 300);
+        state.controllers.forEach((controller) => {
+            controller.process(state);
+        });
+
+        //main.poly.rotate(state.polys[0], 0.01, 300, 300);
 
         main.game.draw(state);
     };
@@ -223,11 +256,6 @@ main.game.start = () => {
     var canvas = main.canvas.create();
     main.canvas.events.size(canvas);
 
-    var keyhandler = main.game.events.keyhandler();
-    var mousehandler = main.game.events.mousehandler();
-
-    main.game.state = {};
-
     var poly = main.poly.create([
         main.point.create(50, 50),
         main.point.create(100, 50),
@@ -235,12 +263,21 @@ main.game.start = () => {
         main.point.create(50, 100)
     ]);
 
+    var key = 'a';
+    var action = (state) => {
+        main.poly.rotate(state.polys[0], 0.05, 300, 300);
+    };
+
+    var binding = main.controller.binding.create(key, action);
+
+    var controller = main.controller.create([binding], main.game.events.keyhandler());
+
+    main.game.state = {};
     main.state.create(
         main.game.state, 
         canvas, 
         [poly], 
-        keyhandler, 
-        mousehandler, 
+        [controller],
         30);
 
     main.game.loop(main.game.state);
