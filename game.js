@@ -34,15 +34,19 @@ main.point.move_to = (point, x, y) => {
     point.y = y;
 };
 
-main.point.rotate = (point, angle) => {
+main.point.rotate = (point, angle, x, y) => {
     var sin = Math.sin(angle);
     var cos = Math.cos(angle);
+
+    main.point.translate(point, -x, -y);
 
     var rx = point.x * cos - point.y * sin;
     var ry = point.x * sin + point.y * cos;
 
     point.x = rx;
     point.y = ry;
+
+    main.point.translate(point, x, y);
 };
 
 /////////////////////////////////////////////////
@@ -65,7 +69,7 @@ main.poly.rotate = (poly, angle, x, y) => {
     main.poly.translate(poly, -x, -y);
 
     poly.points.forEach((point) => {
-        main.point.rotate(point, angle);
+        main.point.rotate(point, angle, x, y);
     });
 
     main.poly.translate(poly, x, y);
@@ -75,10 +79,11 @@ main.poly.rotate = (poly, angle, x, y) => {
 // @block
 /////////////////////////////////////////////////
 
-main.block.create = (poly, center_point) => {
+main.block.create = (poly, center_point, rotation) => {
     return {
         poly: poly,
-        center: center_point
+        center: center_point,
+        rotation
     };
 };
 
@@ -92,6 +97,13 @@ main.block.move_to = (block, x, y) => {
     var dy = y - block.center.y;
 
     main.block.translate(block, dx, dy);
+};
+
+main.block.rotate = (block, rotation, x, y) => {
+    block.rotation += rotation;
+    
+    main.poly.rotate(block.poly, rotation, x, y);
+    main.point.translate(block.center, rotation, x, y);
 };
 
 /////////////////////////////////////////////////
