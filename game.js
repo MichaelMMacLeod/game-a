@@ -48,6 +48,24 @@ main.poly.translate = (poly, dx, dy) => {
     });
 };
 
+main.poly.rotate = (poly, angle, x, y) => {
+    var sin = Math.sin(angle);
+    var cos = Math.cos(angle);
+
+    main.poly.translate(poly, -x, -y);
+
+    // https://en.wikipedia.org/wiki/Rotation_matrix
+    poly.points.forEach((point) => {
+        var rx = point.x * cos - point.y * sin;
+        var ry = point.x * sin + point.y * cos;
+
+        point.x = rx;
+        point.y = ry;
+    });
+
+    main.poly.translate(poly, x, y);
+};
+
 /////////////////////////////////////////////////
 // @block
 /////////////////////////////////////////////////
