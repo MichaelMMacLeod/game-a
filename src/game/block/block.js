@@ -1,6 +1,6 @@
 var mod = { 
-    poly: require('../poly/module.js'), 
-    point: require('../point/module.js')
+    poly: require('../poly/poly.js'), 
+    point: require('../point/point.js')
 };
 
 var create = (poly, center, rotation) => {

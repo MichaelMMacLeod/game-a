@@ -1,10 +1,10 @@
 var mod = { 
-    canvas: require('./canvas/module.js'), 
-    point: require('./point/module.js'), 
-    poly: require('./poly/module.js'), 
-    block: require('./block/module.js'), 
-    controller: require('./controller/module.js'), 
-    state: require('./state/module.js')
+    canvas: require('./canvas/canvas.js'), 
+    point: require('./point/point.js'), 
+    poly: require('./poly/poly.js'), 
+    block: require('./block/block.js'), 
+    controller: require('./controller/controller.js'), 
+    state: require('./state/state.js')
 };
 
 var draw = (canvas, polys) => {

@@ -1,4 +1,4 @@
-var mod = { events: require('./events/module.js') };
+var mod = { events: require('./events/events.js') };
 
 var create = () => {
     var canvas = document.createElement('canvas');

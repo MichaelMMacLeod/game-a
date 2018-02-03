@@ -1,4 +1,4 @@
-var mod = { point: require('../point/module.js') };
+var mod = { point: require('../point/point.js') };
 
 var create = (points) => {
     return { points: points };

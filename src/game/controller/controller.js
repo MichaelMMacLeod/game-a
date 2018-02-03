@@ -1,7 +1,7 @@
 var mod = { 
-    binding: require('./binding/module.js'),
-    handler: require('./handler/module.js'),
-    process: require('./process/module.js') 
+    binding: require('./binding/binding.js'),
+    handler: require('./handler/handler.js'),
+    process: require('./process/process.js') 
 };
 
 var create = (bindings, handler) => {
