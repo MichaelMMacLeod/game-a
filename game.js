@@ -99,7 +99,7 @@ main.block.rotate = (block, rotation, x, y) => {
     block.rotation += rotation;
     
     main.poly.rotate(block.poly, rotation, x, y);
-    main.point.translate(block.center, rotation, x, y);
+    main.point.rotate(block.center, rotation, x, y);
 };
 
 /////////////////////////////////////////////////
