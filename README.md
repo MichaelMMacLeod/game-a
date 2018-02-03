@@ -15,4 +15,4 @@ npm install eslint browserify --save-dev
 
 - Without eslint `make release`
 
-- load ./build/index.html with your favorite browser
+load ./build/index.html with your favorite browser
