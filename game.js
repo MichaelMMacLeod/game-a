@@ -10,6 +10,7 @@ main.block = {};
 main.controller = {};
 main.controller.binding = {};
 main.controller.handler = {};
+main.controller.process = {};
 main.state = {};
 main.game = {};
 main.game.events = {}; 
@@ -82,7 +83,7 @@ main.block.create = (poly, center_point, rotation) => {
     return {
         poly: poly,
         center: center_point,
-        rotation
+        rotation: rotation
     };
 };
 
@@ -130,13 +131,11 @@ main.controller.handler.create = () => {
 };
 
 /////////////////////////////////////////////////
-// @controller
+// @controller.process
 /////////////////////////////////////////////////
 
-main.controller.create = (bindings, handler) => {
-    var controller = {};
-
-    controller.process = (state) => {
+main.controller.process.create = (bindings, handler) => {
+    return (polys) => {
         bindings.forEach((binding) => {
             var run_action = true;
 
@@ -148,10 +147,20 @@ main.controller.create = (bindings, handler) => {
             });
 
             if (run_action) {
-                binding.action(state);
+                binding.action(polys);
             }
         });
     };
+};
+
+/////////////////////////////////////////////////
+// @controller
+/////////////////////////////////////////////////
+
+main.controller.create = (bindings, handler) => {
+    var controller = {};
+
+    controller.process = main.controller.process.create(bindings, handler);
 
     return controller;
 };
@@ -213,12 +222,12 @@ main.canvas.draw = (canvas, polys) => {
 main.state.create = (
     state_object, 
     canvas, 
-    polys, 
+    blocks, 
     controller,
     ms_per_update
 ) => {
     state_object.canvas = canvas;
-    state_object.polys = polys;
+    state_object.blocks = blocks;
     state_object.controller = controller;
     state_object.ms_per_update = ms_per_update;
 };
@@ -260,18 +269,24 @@ main.game.events.mousehandler.create = (handler) => {
 // @game
 /////////////////////////////////////////////////
 
-main.game.draw = (state) => {
-    main.canvas.clear(state.canvas);
-    main.canvas.draw(state.canvas, state.polys);
+main.game.draw = (canvas, polys) => {
+    main.canvas.clear(canvas);
+    main.canvas.draw(canvas, polys);
 };
 
 main.game.loop = (state) => {
     main.canvas.fullscreen(state.canvas);
 
     var loop = () => {
-        state.controller.process(state);
+        state.controller.process(state.blocks[0]);
 
-        main.game.draw(state);
+        var polys = state.blocks.slice().reduce((acc, v) => {
+            acc.push(v.poly);
+            return acc;
+        }, []);
+
+
+        main.game.draw(state.canvas, polys);
     };
 
     window.setInterval(loop, state.ms_per_update);
@@ -288,13 +303,16 @@ main.game.start = () => {
         main.point.create(50, 100)
     ]);
 
+    var center = main.point.create(75, 75);
+
+    var block = main.block.create(poly, center, 0);
+
     var keys = ['a', 'mouse_pressed'];
-    var action = (state) => {
-        main.poly.rotate(state.polys[0], 0.05, 300, 300);
+    var action = (block) => {
+        main.block.rotate(block, 0.05, 300, 300);
     };
 
     var binding = main.controller.binding.create(keys, action);
-
     var handler = main.controller.handler.create();
 
     var controller = main.controller.create([binding], handler);
@@ -303,7 +321,7 @@ main.game.start = () => {
     main.state.create(
         main.game.state, 
         canvas, 
-        [poly], 
+        [block], 
         controller,
         30);
 
