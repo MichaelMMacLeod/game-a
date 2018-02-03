@@ -66,11 +66,9 @@ main.poly.translate = (poly, dx, dy) => {
 };
 
 main.poly.rotate = (poly, angle, x, y) => {
-
     poly.points.forEach((point) => {
         main.point.rotate(point, angle, x, y);
     });
-
 };
 
 /////////////////////////////////////////////////
