@@ -9,9 +9,12 @@ main.poly = {};
 main.block = {};
 main.controller = {};
 main.controller.binding = {};
+main.controller.handler = {};
 main.state = {};
 main.game = {};
 main.game.events = {}; 
+main.game.events.keyhandler = {};
+main.game.events.mousehandler = {};
 
 /////////////////////////////////////////////////
 // @point
@@ -114,6 +117,19 @@ main.controller.binding.create = (key, action) => {
 };
 
 /////////////////////////////////////////////////
+// @controller.handler
+/////////////////////////////////////////////////
+
+main.controller.handler.create = () => {
+    var handler = {};
+
+    var keyhandler = main.game.events.keyhandler.create(handler);
+    var mousehandler = main.game.events.mousehandler.create(handler);
+
+    return handler;
+};
+
+/////////////////////////////////////////////////
 // @controller
 /////////////////////////////////////////////////
 
@@ -202,40 +218,33 @@ main.state.create = (
 // @game.events
 /////////////////////////////////////////////////
 
-main.game.events.keyhandler = () => {
-    var keys = [];
-
+main.game.events.keyhandler.create = (handler) => {
     window.addEventListener('keydown', (e) => {
-        keys[e.key] = true;
+        handler[e.key] = true;
     });
 
     window.addEventListener('keyup', (e) => {
-        keys[e.key] = false;
+        handler[e.key] = false;
     });
-
-    return keys;
 };
 
-main.game.events.mousehandler = () => {
-    var mouse = {
-        point: main.point.create(0, 0),
-        pressed: false
-    };
+main.game.events.mousehandler.create = (handler) => {
+    handler['mouse_x'] = 0;
+    handler['mouse_y'] = 0;
+    handler['mouse_pressed'] = false;
 
     window.addEventListener('mousemove', (e) => {
-        mouse.point.x = e.clientX;
-        mouse.point.y = e.clientY;
+        handler['mouse_x'] = e.clientX;
+        handler['mouse_y'] = e.clientY;
     });
 
     window.addEventListener('mousedown', () => {
-        mouse.pressed = true;
+        handler['mouse_pressed'] = true;
     });
 
     window.addEventListener('mouseup', () => {
-        mouse.pressed = false;
+        handler['mouse_pressed'] = false;
     });
-
-    return mouse;
 };
 
 /////////////////////////////////////////////////
@@ -281,8 +290,10 @@ main.game.start = () => {
 
     var binding = main.controller.binding.create(key, action);
 
-    var controller = main.controller.create([binding], main.game.events.keyhandler());
+    var handler = main.controller.handler.create();
 
+    var controller = main.controller.create([binding], handler);
+    
     main.game.state = {};
     main.state.create(
         main.game.state, 
