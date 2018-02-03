@@ -214,12 +214,12 @@ main.state.create = (
     state_object, 
     canvas, 
     polys, 
-    controllers,
+    controller,
     ms_per_update
 ) => {
     state_object.canvas = canvas;
     state_object.polys = polys;
-    state_object.controllers = controllers;
+    state_object.controller = controller;
     state_object.ms_per_update = ms_per_update;
 };
 
@@ -269,11 +269,7 @@ main.game.loop = (state) => {
     main.canvas.fullscreen(state.canvas);
 
     var loop = () => {
-        state.controllers.forEach((controller) => {
-            controller.process(state);
-        });
-
-        //main.poly.rotate(state.polys[0], 0.01, 300, 300);
+        state.controller.process(state);
 
         main.game.draw(state);
     };
@@ -308,7 +304,7 @@ main.game.start = () => {
         main.game.state, 
         canvas, 
         [poly], 
-        [controller],
+        controller,
         30);
 
     main.game.loop(main.game.state);
