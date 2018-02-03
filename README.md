@@ -10,8 +10,6 @@ npm install eslint browserify --save-dev
 ```
 
 ##### Build project
-```
-npm install 
 
 - With eslint `make debug`
 
