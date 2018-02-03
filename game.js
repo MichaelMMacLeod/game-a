@@ -123,8 +123,8 @@ main.controller.binding.create = (keys, action) => {
 main.controller.handler.create = () => {
     var handler = {};
 
-    var keyhandler = main.game.events.keyhandler.create(handler);
-    var mousehandler = main.game.events.mousehandler.create(handler);
+    main.game.events.keyhandler.create(handler);
+    main.game.events.mousehandler.create(handler);
 
     return handler;
 };
