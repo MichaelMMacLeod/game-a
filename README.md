@@ -2,7 +2,18 @@
 
 ### Building project
 
-- With eslint `make check`
+##### Install dependencies
+
+node.js (https://nodejs.org/en/)
+```
+npm install eslint browserify --save-dev
+```
+
+##### Build project
+```
+npm install 
+
+- With eslint `make debug`
 
 - Without eslint `make release`
 
