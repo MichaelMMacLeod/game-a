@@ -109,9 +109,9 @@ main.block.rotate = (block, rotation, x, y) => {
 // @controller.binding
 /////////////////////////////////////////////////
 
-main.controller.binding.create = (key, action) => {
+main.controller.binding.create = (keys, action) => {
     return {
-        key: key,
+        keys: keys,
         action: action
     };
 };
@@ -138,7 +138,16 @@ main.controller.create = (bindings, handler) => {
 
     controller.process = (state) => {
         bindings.forEach((binding) => {
-            if (handler[binding.key]) {
+            var run_action = true;
+
+            binding.keys.forEach((key) => {
+                if (!handler[key]) {
+                    run_action = false;
+                    return;
+                }
+            });
+
+            if (run_action) {
                 binding.action(state);
             }
         });
@@ -283,12 +292,12 @@ main.game.start = () => {
         main.point.create(50, 100)
     ]);
 
-    var key = 'a';
+    var keys = ['a', 'mouse_pressed'];
     var action = (state) => {
         main.poly.rotate(state.polys[0], 0.05, 300, 300);
     };
 
-    var binding = main.controller.binding.create(key, action);
+    var binding = main.controller.binding.create(keys, action);
 
     var handler = main.controller.handler.create();
 
