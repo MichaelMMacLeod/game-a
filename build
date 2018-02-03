@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo 'build: browserify src.js > out.js'
+browserify src.js > out.js
+echo 'build: done'
