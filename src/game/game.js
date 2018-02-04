@@ -63,9 +63,17 @@ var start = () => {
     var action = (part) => {
         mod.part.translate(part, 1, 1);
     };
+
+    var keys_rot = ['r'];
+    var action_rot = (part) => {
+        mod.part.rotate(part, 0.05, 300, 300);
+    };
+
     var binding = mod.controller.binding.create(keys, action);
+    var binding_rot = mod.controller.binding.create(keys_rot, action_rot);
+
     var handler = mod.controller.handler.create();
-    var controller = mod.controller.create([binding], handler);
+    var controller = mod.controller.create([binding, binding_rot], handler);
 
     var state = mod.state.create( 
         canvas, 
