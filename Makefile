@@ -1,6 +1,6 @@
 debug:
 	./node_modules/eslint/bin/eslint.js --fix src/
-	browserify src/src.js > build/target.js
+	./node_modules/browserify/bin/cmd.js src/src.js > build/target.js
 
 release:
-	browserify src/src.js > build/target.js
+	./node_modules/browserify/bin/cmd.js src/src.js > build/target.js
