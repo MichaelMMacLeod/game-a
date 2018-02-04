@@ -30,9 +30,14 @@ var rotate = (point, angle, x, y) => {
     translate(point, x, y);
 };
 
+var copy = (point) => {
+    return create(point.x, point.y);
+};
+
 module.exports = { 
     create: create, 
     translate: translate, 
     move_to: move_to, 
-    rotate: rotate
+    rotate: rotate,
+    copy: copy
 };

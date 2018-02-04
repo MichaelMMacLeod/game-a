@@ -16,8 +16,19 @@ var rotate = (poly, angle, x, y) => {
     });
 };
 
+var copy = (poly) => {
+    var c = [];
+    
+    for (let i = 0; i < poly.points.length; i++) {
+        c[i] = mod.point.copy(poly.points[i]);
+    }
+
+    return c;
+};
+
 module.exports = { 
     create: create, 
     translate: translate, 
-    rotate: rotate
+    rotate: rotate,
+    copy: copy
 };
