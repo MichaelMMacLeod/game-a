@@ -1,12 +1,12 @@
 var create = (
     canvas, 
-    blocks, 
+    parts, 
     controller, 
     ms_per_update
 ) => {
     return {
         canvas: canvas, 
-        blocks: blocks, 
+        parts: parts, 
         controller: controller, 
         ms_per_update: ms_per_update
     };
