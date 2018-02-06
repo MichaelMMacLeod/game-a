@@ -16,6 +16,12 @@ var rotate = (poly, angle, x, y) => {
     });
 };
 
+var scale = (poly, scalar) => {
+    poly.points.forEach((point) => {
+        mod.point.scale(point, scalar);
+    });
+};
+
 var copy = (poly) => {
     var c = [];
     
@@ -30,5 +36,6 @@ module.exports = {
     create: create, 
     translate: translate, 
     rotate: rotate,
+    scale: scale,
     copy: copy
 };

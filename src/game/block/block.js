@@ -30,6 +30,11 @@ var rotate = (block, rotation, x, y) => {
     mod.point.rotate(block.center, rotation, x, y);
 };
 
+var scale = (block, scalar) => {
+    mod.poly.scale(block.poly, scalar);
+    mod.point.scale(block.center, scalar);
+};
+
 var copy = (block) => {
     return create(
         mod.poly.copy(block.poly),
@@ -42,5 +47,6 @@ module.exports = {
     translate: translate, 
     move_to: move_to, 
     rotate: rotate,
+    scale: scale,
     copy: copy
 };
