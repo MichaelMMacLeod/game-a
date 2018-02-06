@@ -23,7 +23,7 @@ var copy = (poly) => {
         c[i] = mod.point.copy(poly.points[i]);
     }
 
-    return c;
+    return create(c);
 };
 
 module.exports = { 
