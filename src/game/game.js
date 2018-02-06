@@ -84,7 +84,7 @@ var start = () => {
     var canvas = mod.canvas.create();
     mod.canvas.events.resize.create(canvas, mod.canvas.fullscreen);
 
-    var camera = mod.camera.create(canvas, part.block.center, 500, 500, 1.0);
+    var camera = mod.camera.create(canvas, part.block.center, 1.0);
 
     var state = mod.state.create( 
         camera, 

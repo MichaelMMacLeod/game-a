@@ -3,12 +3,10 @@ var mod = {
     canvas: require('../canvas/canvas.js')
 };
 
-var create = (canvas, focus, width, height, zoom) => {
+var create = (canvas, focus, zoom) => {
     return {
         canvas: canvas,
         focus: focus,
-        width: width,
-        height: height,
         zoom: zoom
     };
 };
