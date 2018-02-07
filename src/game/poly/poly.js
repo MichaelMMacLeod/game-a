@@ -22,6 +22,32 @@ var scale = (poly, scalar) => {
     });
 };
 
+var overlaps = (poly, point) => {
+    var min_x = poly.points[0].x;
+    var max_x = poly.points[0].x;
+    var min_y = poly.points[0].y;
+    var max_y = poly.points[0].y;
+
+    for (let i = 1; i < poly.points.length; i++) {
+        var p = poly.points[i];
+
+        if (p.x < min_x) {
+            min_x = p.x;
+        } else if (p.x > max_x) {
+            max_x = p.y;
+        }
+
+        if (p.y < min_y) {
+            min_y = p.y;
+        } else if (p.y > max_y) {
+            max_y = p.y;
+        }
+    }
+
+    return point.x >= min_x && point.x <= max_x 
+        && point.y >= min_y && point.y <= max_y;
+};
+
 var copy = (poly) => {
     var c = [];
     
@@ -37,5 +63,6 @@ module.exports = {
     translate: translate, 
     rotate: rotate,
     scale: scale,
+    overlaps: overlaps,
     copy: copy
 };
