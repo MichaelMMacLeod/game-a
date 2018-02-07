@@ -19,8 +19,10 @@ var draw = (camera, blocks) => {
 
         mod.block.translate(
             b,
-            -camera.focus.x + camera.canvas.width / 2,
-            -camera.focus.y + camera.canvas.height / 2);
+            -camera.focus.x + camera.canvas.width / (2 * camera.zoom),
+            -camera.focus.y + camera.canvas.height / (2 * camera.zoom));
+
+        mod.block.scale(b, camera.zoom);
 
         c[i] = b.poly;
     }
