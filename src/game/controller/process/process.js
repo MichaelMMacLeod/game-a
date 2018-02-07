@@ -1,5 +1,5 @@
 var create = (bindings, handler) => {
-    return (polys) => {
+    return (state) => {
         bindings.forEach((binding) => {
             var run_action = true;
 
@@ -11,7 +11,7 @@ var create = (bindings, handler) => {
             });
 
             if (run_action) {
-                binding.action(polys);
+                binding.action(state);
             }
         });
     };

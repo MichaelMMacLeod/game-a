@@ -14,7 +14,7 @@ var loop = (state) => {
     mod.canvas.fullscreen(state.camera.canvas);
 
     var update = () => {
-        state.controller.process(state.parts[0]);
+        state.controller.process(state);
 
         var blocks = state.parts.slice().reduce((acc, v) => {
             acc.push(v.block);
@@ -66,13 +66,13 @@ var start = () => {
     var part = mod.part.create(block, [link]);
 
     var keys = ['a', 'mouse_pressed'];
-    var action = (part) => {
-        mod.part.translate(part, 1, 1);
+    var action = (state) => {
+        mod.part.translate(state.parts[0], 1, 1);
     };
 
     var keys_rot = ['r'];
-    var action_rot = (part) => {
-        mod.part.rotate(part, 0.05, part.block.center.x, part.block.center.y);
+    var action_rot = (state) => {
+        mod.part.rotate(state.parts[0], 0.05, part.block.center.x, part.block.center.y);
     };
 
     var binding = mod.controller.binding.create(keys, action);
