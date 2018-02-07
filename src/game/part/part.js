@@ -1,6 +1,5 @@
 var mod = { 
     block: require('../block/block.js'),
-    root: require('../root/root.js'),
     link: require('../link/link.js'),
     point: require('../point/point.js')
 };
