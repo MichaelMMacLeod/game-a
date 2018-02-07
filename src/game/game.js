@@ -52,7 +52,7 @@ var start = () => {
     ]);
     var center_extra = mod.point.create(75, 75);
     var block_extra = mod.block.create(poly_extra, center_extra, 0);
-    var part_extra = mod.part.create(block_extra, []);
+    var part_extra = mod.part.create(block_extra, mod.point.create(0,0), []);
 
     mod.part.translate(part_extra, 100, 100);
 
@@ -60,10 +60,10 @@ var start = () => {
     var center_linked = mod.point.create(175, 75);
     var block_linked = mod.block.create(poly_linked, center_linked, 0);
     var link_linked = mod.link.create(null, mod.point.create(175, 75), 0);
-    var part_linked = mod.part.create(block_linked, [link_linked]);
+    var part_linked = mod.part.create(block_linked, mod.point.create(0,0), [link_linked]);
 
     var link = mod.link.create(part_linked, mod.point.create(100, 75), 0);
-    var part = mod.part.create(block, [link]);
+    var part = mod.part.create(block, mod.point.create(0,0), [link]);
 
     var keys = ['a', 'mouse_pressed'];
     var action = (state) => {

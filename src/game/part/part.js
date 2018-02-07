@@ -1,18 +1,22 @@
 var mod = { 
     block: require('../block/block.js'),
+    root: require('../root/root.js'),
     link: require('../link/link.js'),
     point: require('../point/point.js')
 };
 
-var create = (block, links) => {
+var create = (block, root, links) => {
     return {
         block: block,
+        root: root,
         links: links
     };
 };
 
 var translate = (part, dx, dy) => {
     mod.block.translate(part.block, dx, dy);
+
+    mod.point.translate(part.root, dx, dy);
 
     part.links.forEach((link) => {
         mod.point.translate(link.point, dx, dy);
@@ -25,6 +29,8 @@ var translate = (part, dx, dy) => {
 
 var rotate = (part, rotation, x, y) => {
     mod.block.rotate(part.block, rotation, x, y);
+
+    mod.point.translate(part.root, rotation, x, y);
 
     part.links.forEach((link) => {
         link.rotation += rotation;
