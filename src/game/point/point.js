@@ -16,8 +16,8 @@ var move_to = (point, x, y) => {
 };
 
 var rotate = (point, angle, x, y) => {
-    var sin = Math.sin(angle);
-    var cos = Math.cos(angle);
+    var sin = Math.sin(-angle);
+    var cos = Math.cos(-angle);
 
     translate(point, -x, -y);
 
