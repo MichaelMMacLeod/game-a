@@ -14,7 +14,7 @@ var loop = (state) => {
     mod.canvas.fullscreen(state.camera.canvas);
 
     var update = () => {
-        state.controller.process(state);
+        mod.controller.process(state.controller, state);
 
         var blocks = state.parts.slice().reduce((acc, v) => {
             acc.push(v.block);
@@ -65,21 +65,42 @@ var start = () => {
     var link = mod.link.create(part_linked, mod.point.create(100, 75), 0);
     var part = mod.part.create(block, mod.point.create(0,0), [link]);
 
-    var keys = ['a', 'mouse_pressed'];
-    var action = (state) => {
-        mod.part.translate(state.parts[0], 1, 1);
-    };
+    var move = mod.controller.binding.create(
+        ['w'],
+        (state) => {
+            var part = state.parts[0];
 
-    var keys_rot = ['r'];
-    var action_rot = (state) => {
-        mod.part.rotate(state.parts[0], 0.05, part.block.center.x, part.block.center.y);
-    };
+            var s = Math.sin(part.block.rotation);
+            var c = Math.cos(part.block.rotation);
 
-    var binding = mod.controller.binding.create(keys, action);
-    var binding_rot = mod.controller.binding.create(keys_rot, action_rot);
+            mod.part.translate(part, s, c);
+        });
 
-    var handler = mod.controller.handler.create();
-    var controller = mod.controller.create([binding, binding_rot], handler);
+    var rotate_clockwise = mod.controller.binding.create(
+        ['a'],
+        (state) => {
+            mod.part.rotate(
+                state.parts[0],
+                0.05,
+                state.parts[0].block.center.x,
+                state.parts[0].block.center.y);
+        });
+
+    var rotate_counter_clockwise = mod.controller.binding.create(
+        ['d'],
+        (state) => {
+            mod.part.rotate(
+                state.parts[0],
+                -0.05,
+                state.parts[0].block.center.x,
+                state.parts[0].block.center.y);
+        });
+
+    var controller = mod.controller.create([
+        move,
+        rotate_counter_clockwise,
+        rotate_clockwise
+    ]);
 
     var canvas = mod.canvas.create();
     mod.canvas.events.resize.create(canvas, mod.canvas.fullscreen);
