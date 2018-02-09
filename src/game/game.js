@@ -7,7 +7,8 @@ var mod = {
     link: require('./link/link.js'),
     controller: require('./controller/controller.js'), 
     state: require('./state/state.js'),
-    camera: require('./camera/camera.js')
+    camera: require('./camera/camera.js'),
+    templates: require('./templates/templates.js')
 };
 
 var loop = (state) => {
@@ -28,50 +29,20 @@ var loop = (state) => {
 };
 
 var start = () => {
-    var poly = mod.poly.create([ 
-        mod.point.create(50, 50), 
-        mod.point.create(100, 50),
-        mod.point.create(100, 100),
-        mod.point.create(50, 100)
-    ]);
-    var center = mod.point.create(75, 75);
-    var block = mod.block.create(poly, center, 0);
-
-    var poly_linked = mod.poly.create([
-        mod.point.create(50, 50), 
-        mod.point.create(100, 50),
-        mod.point.create(100, 100),
-        mod.point.create(50, 100)
-    ]);
-
-    var poly_extra = mod.poly.create([
-        mod.point.create(50, 50), 
-        mod.point.create(100, 50),
-        mod.point.create(100, 100),
-        mod.point.create(50, 100)
-    ]);
-    var center_extra = mod.point.create(75, 75);
-    var block_extra = mod.block.create(poly_extra, center_extra, 0);
-    var part_extra = mod.part.create(block_extra, mod.point.create(0,0), []);
-
-    mod.part.translate(part_extra, 100, 100);
-
-    mod.poly.translate(poly_linked, 100, 0);
-    var center_linked = mod.point.create(175, 75);
-    var block_linked = mod.block.create(poly_linked, center_linked, 0);
-    var link_linked = mod.link.create(null, mod.point.create(175, 75), 0);
-    var part_linked = mod.part.create(block_linked, mod.point.create(0,0), [link_linked]);
-
-    var link = mod.link.create(part_linked, mod.point.create(100, 75), 0);
-    var part = mod.part.create(block, mod.point.create(0,0), [link]);
+    var part1 = mod.templates.part.make_square(50, 0, 0, 0);
+    var part2 = mod.templates.part.make_square(25, 52, 0, 0);
+    var part3 = mod.templates.part.make_square(10, 200, 200, 0);
+    var part4 = mod.templates.part.make_square(25, -52, 0, 0);
+    part1.links[0].part = part2;
+    part1.links[2].part = part4;
 
     var move = mod.controller.binding.create(
         ['w'],
         (state) => {
             var part = state.parts[0];
 
-            var s = Math.sin(part.block.rotation);
-            var c = Math.cos(part.block.rotation);
+            var s = 2 * Math.sin(part.block.rotation);
+            var c = 2 * Math.cos(part.block.rotation);
 
             mod.part.translate(part, s, c);
         });
@@ -105,11 +76,11 @@ var start = () => {
     var canvas = mod.canvas.create();
     mod.canvas.events.resize.create(canvas, mod.canvas.fullscreen);
 
-    var camera = mod.camera.create(canvas, part.block.center, 2.0);
+    var camera = mod.camera.create(canvas, part3.block.center, 1.0);
 
     var state = mod.state.create( 
         camera, 
-        [part, part_linked, part_extra], 
+        [part1, part2, part3, part4], 
         controller, 
         30);
 
