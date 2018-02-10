@@ -17,7 +17,7 @@ var loop = (state) => {
     var update = () => {
         mod.controller.process(state.controller, state);
 
-        var blocks = state.parts.slice().reduce((acc, v) => {
+        var blocks = state.parts.reduce((acc, v) => {
             acc.push(v.block);
             return acc;
         }, []);
