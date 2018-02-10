@@ -17,6 +17,8 @@ var loop = (state) => {
     var update = () => {
         mod.controller.process(state.controller, state);
 
+        mod.part.translate(state.parts[0], state.parts[0].ax, state.parts[0].ay);
+
         var blocks = state.parts.slice().reduce((acc, v) => {
             acc.push(v.block);
             return acc;
@@ -30,6 +32,8 @@ var loop = (state) => {
 
 var start = () => {
     var part1 = mod.templates.part.make_square(50, 0, 0, 0);
+    part1.ax = 0;
+    part1.ay = 0;
     var part2 = mod.templates.part.make_square(25, 52, 0, 0);
     var part3 = mod.templates.part.make_square(10, 200, 200, 0);
     var part4 = mod.templates.part.make_square(25, -52, 0, 0);
@@ -41,10 +45,8 @@ var start = () => {
         (state) => {
             var part = state.parts[0];
 
-            var s = 2 * Math.sin(part.block.rotation);
-            var c = 2 * Math.cos(part.block.rotation);
-
-            mod.part.translate(part, s, c);
+            part.ax += 0.5 * Math.sin(part.block.rotation);
+            part.ay += 0.5 * Math.cos(part.block.rotation);
         });
 
     var rotate_clockwise = mod.controller.binding.create(
