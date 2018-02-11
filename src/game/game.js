@@ -26,7 +26,7 @@ var start = () => {
     part1.links[0].part = part2;
     part1.links[2].part = part4;
 
-    var player = mod.player.create(part1, mod.point.create(0, 0), 0);
+    var player = mod.player.create(part1, mod.point.create(0, 0));
 
     var move = mod.controller.binding.create(
         ['w'],

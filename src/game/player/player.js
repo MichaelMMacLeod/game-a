@@ -1,8 +1,7 @@
-var create = (part, vector, rotation) => {
+var create = (part, vector) => {
     return {
         part: part,
-        vector: vector,
-        rotation: rotation
+        vector: vector
     };
 };
 
