@@ -9,9 +9,9 @@ var create = (state) => {
         mod.controller.process(state.controller, state);
 
         mod.part.translate(
-            state.parts[0],
-            state.parts[0].ax,
-            state.parts[0].ay);
+            state.player.part,
+            state.player.vector.x,
+            state.player.vector.y);
 
         var blocks = state.parts.reduce((acc, v) => {
             acc.push(v.block);

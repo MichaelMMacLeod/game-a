@@ -1,13 +1,15 @@
 var create = (
-    camera, 
-    parts, 
-    controller, 
+    camera,
+    player,
+    parts,
+    controller,
     ms_per_update
 ) => {
     return {
-        camera: camera, 
-        parts: parts, 
-        controller: controller, 
+        camera: camera,
+        player: player,
+        parts: parts,
+        controller: controller,
         ms_per_update: ms_per_update
     };
 };

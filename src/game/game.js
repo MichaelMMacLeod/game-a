@@ -9,7 +9,8 @@ var mod = {
     state: require('./state/state.js'),
     camera: require('./camera/camera.js'),
     templates: require('./templates/templates.js'),
-    update: require('./update/update.js')
+    update: require('./update/update.js'),
+    player: require('./player/player.js')
 };
 
 var loop = (state) => {
@@ -19,41 +20,41 @@ var loop = (state) => {
 
 var start = () => {
     var part1 = mod.templates.part.make_square(50, 0, 0, 0);
-    part1.ax = 0;
-    part1.ay = 0;
     var part2 = mod.templates.part.make_square(25, 52, 0, 0);
     var part3 = mod.templates.part.make_square(10, 200, 200, 0);
     var part4 = mod.templates.part.make_square(25, -52, 0, 0);
     part1.links[0].part = part2;
     part1.links[2].part = part4;
 
+    var player = mod.player.create(part1, mod.point.create(0, 0), 0);
+
     var move = mod.controller.binding.create(
         ['w'],
         (state) => {
-            var part = state.parts[0];
+            var r = state.player.part.block.rotation;
 
-            part.ax += 0.5 * Math.sin(part.block.rotation);
-            part.ay += 0.5 * Math.cos(part.block.rotation);
+            state.player.vector.x += 0.5 * Math.sin(r);
+            state.player.vector.y += 0.5 * Math.cos(r);
         });
 
     var rotate_clockwise = mod.controller.binding.create(
         ['a'],
         (state) => {
             mod.part.rotate(
-                state.parts[0],
+                state.player.part,
                 0.05,
-                state.parts[0].block.center.x,
-                state.parts[0].block.center.y);
+                state.player.part.block.center.x,
+                state.player.part.block.center.y);
         });
 
     var rotate_counter_clockwise = mod.controller.binding.create(
         ['d'],
         (state) => {
             mod.part.rotate(
-                state.parts[0],
+                state.player.part,
                 -0.05,
-                state.parts[0].block.center.x,
-                state.parts[0].block.center.y);
+                state.player.part.block.center.x,
+                state.player.part.block.center.y);
         });
 
     var controller = mod.controller.create([
@@ -69,6 +70,7 @@ var start = () => {
 
     var state = mod.state.create( 
         camera, 
+        player,
         [part1, part2, part3, part4], 
         controller, 
         30);
