@@ -8,24 +8,13 @@ var mod = {
     controller: require('./controller/controller.js'), 
     state: require('./state/state.js'),
     camera: require('./camera/camera.js'),
-    templates: require('./templates/templates.js')
+    templates: require('./templates/templates.js'),
+    update: require('./update/update.js')
 };
 
 var loop = (state) => {
     mod.canvas.fullscreen(state.camera.canvas);
-
-    var update = () => {
-        mod.controller.process(state.controller, state);
-
-        var blocks = state.parts.reduce((acc, v) => {
-            acc.push(v.block);
-            return acc;
-        }, []);
-
-        mod.camera.draw(state.camera, blocks);
-    };
-
-    window.setInterval(update, state.ms_per_update);
+    window.setInterval(mod.update.create(state), state.ms_per_update);
 };
 
 var start = () => {
